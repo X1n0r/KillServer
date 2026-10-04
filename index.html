@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KillServer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #000000;
+            --bg-elevated: #080808;
+            --bg-card: #0a0a0a;
+            --bg-hover: #111111;
+            --border: #1a1a1a;
+            --border-light: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #555555;
+            --text-dim: #333333;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            font-size: 13px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--bg-elevated);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            padding: 48px 32px 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-text h1 {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .logo-text p {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 24px 0;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 28px;
+        }
+
+        .nav-label {
+            padding: 0 32px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .nav-item {
+            padding: 10px 32px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            border-left: 2px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+            background: var(--bg-hover);
+        }
+
+        .nav-item.active {
+            color: var(--text-primary);
+            background: var(--bg-hover);
+            border-left-color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .nav-item svg {
+            width: 18px;
+            height: 18px;
+            opacity: 0.5;
+            transition: opacity 0.15s ease;
+        }
+
+        .nav-item:hover svg,
+        .nav-item.active svg {
+            opacity: 1;
+        }
+
+        .sidebar-footer {
+            padding: 24px 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .status-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-value {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-feature-settings: 'tnum';
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        .main {
+            flex: 1;
+            margin-left: 280px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            padding: 32px 48px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content h2 {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .header-content p {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid var(--border-light);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            letter-spacing: 0.3px;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--border);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg);
+            border-color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            background: #e8e8e8;
+            border-color: #e8e8e8;
+        }
+
+        .content {
+            flex: 1;
+            padding: 48px;
+            overflow-y: auto;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.15s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border-light);
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+            font-feature-settings: 'tnum';
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-primary);
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--text-secondary);
+            background: var(--bg-elevated);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555555' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            margin-bottom: 40px;
+            padding: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 14px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+        }
+
+        .tab:hover {
+            color: var(--text-secondary);
+        }
+
+        .tab.active {
+            background: var(--text-primary);
+            color: var(--bg);
+            font-weight: 600;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .method-btn {
+            padding: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .method-btn:hover {
+            border-color: var(--text-dim);
+            color: var(--text-secondary);
+            background: var(--bg-elevated);
+        }
+
+        .method-btn.active {
+            background: var(--text-primary);
+            color: var(--bg);
+            border-color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            text-align: left;
+            padding: 14px 16px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table td {
+            padding: 16px;
+            font-size: 13px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border);
+            font-weight: 400;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tr:hover td {
+            background: var(--bg-hover);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-active {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+        }
+
+        .badge-inactive {
+            background: var(--bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .terminal {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            height: 320px;
+            overflow-y: auto;
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .terminal-line {
+            margin-bottom: 6px;
+        }
+
+        .terminal-time {
+            color: var(--text-dim);
+            margin-right: 16px;
+            font-feature-settings: 'tnum';
+        }
+
+        .folder-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .folder-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .folder-item:last-child {
+            border-bottom: none;
+        }
+
+        .folder-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.4;
+        }
+
+        .folder-name {
+            flex: 1;
+            font-size: 13px;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .folder-size {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-info h4 {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .settings-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .toggle {
+            width: 44px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s ease;
+        }
+
+        .toggle.active {
+            background: var(--text-primary);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle.active::after {
+            background: var(--bg);
+            left: 22px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty svg {
+            width: 56px;
+            height: 56px;
+            margin-bottom: 20px;
+            opacity: 0.15;
+        }
+
+        .empty p {
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .progress {
+            height: 3px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 1200px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 24px;
+            }
+
+            .content {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="width: 100%; max-width: 400px; padding: 40px;">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="font-size: 24px; font-weight: 600; letter-spacing: 3px; color: var(--text-primary); margin-bottom: 8px;">KillServer</h1>
+                <p style="font-size: 12px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase;">Stress Testing</p>
+            </div>
+            
+            <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 32px;">
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Username</label>
+                    <input type="text" id="login-username" class="form-input" placeholder="Enter username" style="padding: 14px 18px; border-radius: 8px;">
+                </div>
+                
+                <div style="margin-bottom: 32px;">
+                    <label style="display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Password</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="Enter password" style="padding: 14px 18px; border-radius: 8px;" onkeypress="if(event.key === 'Enter') login()">
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 13px; border-radius: 8px;" onclick="login()">Login</button>
+            </div>
+            
+            <p style="text-align: center; margin-top: 24px; font-size: 11px; color: var(--text-muted);">Authorized Access Only</p>
+        </div>
+    </div>
+
+    <div class="main-container" id="main-app" style="display: none; flex: 1; display: flex;">
+        <div class="sidebar">
+        <div class="logo">
+            <div class="logo-text">
+                <h1>KillServer</h1>
+                <p>Stress Testing</p>
+            </div>
+        </div>
+
+        <div class="nav">
+            <div class="nav-section">
+                <div class="nav-label">Main</div>
+                <div class="nav-item active" onclick="showPage('dashboard')">
+                    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="5" height="5" rx="1"/>
+                        <rect x="10" y="3" width="5" height="5" rx="1"/>
+                        <rect x="3" y="10" width="5" height="5" rx="1"/>
+                        <rect x="10" y="10" width="5" height="5" rx="1"/>
+                    </svg>
+                    Dashboard
+                </div>
+                <div class="nav-item" onclick="showPage('attack')">
+                    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 3L3 9H7V15H11V9H15L9 3Z"/>
+                    </svg>
+                    Attack Panel
+                </div>
+                <div class="nav-item" onclick="showPage('targets')">
+                    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="9" cy="9" r="6"/>
+                        <circle cx="9" cy="9" r="2"/>
+                    </svg>
+                    Targets
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-label">Configuration</div>
+                <div class="nav-item" onclick="showPage('methods')">
+                    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 3L7 7H11L9 3Z"/>
+                        <path d="M8 7V11" stroke-linecap="round"/>
+                        <path d="M10 7V11" stroke-linecap="round"/>
+                        <path d="M6 11H12" stroke-linecap="round"/>
+                    </svg>
+                    Methods
+                </div>
+                <div class="nav-item" onclick="showPage('proxies')">
+                    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="9" cy="5" r="2"/>
+                        <path d="M5 9C5 7.9 5.9 7 7 7H11C12.1 7 13 7.9 13 9V15H5V9Z"/>
+                    </svg>
+                    Proxies
+                </div>
+                <div class="nav-item" onclick="showPage('api')">
+                    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4H14V6H4V4Z"/>
+                        <path d="M4 8H14V10H4V8Z"/>
+                        <path d="M4 12H10V14H4V12Z"/>
+                    </svg>
+                    API Keys
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-label">System</div>
+                <div class="nav-item" onclick="showPage('files')">
+                    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4C4 2.9 4.9 2 6 2H12C13.1 2 14 2.9 14 4V14C14 15.1 13.1 16 12 16H6C4.9 16 4 15.1 4 14V4Z"/>
+                        <path d="M6 6H12" stroke-linecap="round"/>
+                        <path d="M6 9H10" stroke-linecap="round"/>
+                    </svg>
+                    Files
+                </div>
+                <div class="nav-item" onclick="showPage('settings')">
+                    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="9" cy="9" r="3"/>
+                        <path d="M9 2V4" stroke-linecap="round"/>
+                        <path d="M9 14V16" stroke-linecap="round"/>
+                        <path d="M2 9H4" stroke-linecap="round"/>
+                        <path d="M14 9H16" stroke-linecap="round"/>
+                        <path d="M4.22 4.22L5.64 5.64" stroke-linecap="round"/>
+                        <path d="M12.36 12.36L13.78 13.78" stroke-linecap="round"/>
+                        <path d="M4.22 13.78L5.64 12.36" stroke-linecap="round"/>
+                        <path d="M12.36 5.64L13.78 4.22" stroke-linecap="round"/>
+                    </svg>
+                    Settings
+                </div>
+                <div class="nav-item" onclick="showPage('logs')">
+                    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4H14V14H4V4Z" stroke-linejoin="round"/>
+                        <path d="M6 7H12" stroke-linecap="round"/>
+                        <path d="M6 10H10" stroke-linecap="round"/>
+                    </svg>
+                    Logs
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="status-row">
+                <span>CPU</span>
+                <span class="status-value">12%</span>
+            </div>
+            <div class="status-row">
+                <span>Memory</span>
+                <span class="status-value">256 MB</span>
+            </div>
+            <div class="status-row">
+                <span>Network</span>
+                <span class="status-value">1.2 Gbps</span>
+            </div>
+            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
+                <button class="btn" style="width: 100%; padding: 10px; font-size: 11px;" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="header">
+            <div class="header-content">
+                <h2 id="page-title">Dashboard</h2>
+                <p id="page-subtitle">Overview of your operations</p>
+            </div>
+            <div class="header-actions">
+                <span id="user-display" style="font-size: 12px; color: var(--text-muted); margin-right: 16px; display: none;">root (owner)</span>
+                <button class="btn" onclick="showPage('attack')">New Attack</button>
+                <button class="btn btn-primary">Generate Report</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Dashboard -->
+            <div class="page active" id="page-dashboard">
+                <div class="grid grid-4" style="margin-bottom: 24px;">
+                    <div class="card stat">
+                        <div class="card-body">
+                            <div class="stat-value" id="stat-attacks">0</div>
+                            <div class="stat-label">Active Attacks</div>
+                        </div>
+                    </div>
+                    <div class="card stat">
+                        <div class="card-body">
+                            <div class="stat-value" id="stat-requests">0</div>
+                            <div class="stat-label">Total Requests</div>
+                        </div>
+                    </div>
+                    <div class="card stat">
+                        <div class="card-body">
+                            <div class="stat-value" id="stat-bandwidth">0</div>
+                            <div class="stat-label">Bandwidth (MB/s)</div>
+                        </div>
+                    </div>
+                    <div class="card stat">
+                        <div class="card-body">
+                            <div class="stat-value" id="stat-threads">0</div>
+                            <div class="stat-label">Active Threads</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Recent Activity</div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Target</th>
+                                        <th>Method</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>example.com</td>
+                                        <td>HTTP FLOOD</td>
+                                        <td><span class="badge badge-active">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>192.168.1.50</td>
+                                        <td>TCP FLOOD</td>
+                                        <td><span class="badge badge-active">Running</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>test.org</td>
+                                        <td>SYN FLOOD</td>
+                                        <td><span class="badge badge-inactive">Failed</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">System Status</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="form-label">CPU Usage</div>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 12%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-label">Memory Usage</div>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 3%;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-label">Disk Usage</div>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 45%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attack Panel -->
+            <div class="page" id="page-attack">
+                <div style="max-width: 680px; margin: 0 auto;">
+                    <div class="form-group" style="margin-bottom: 32px;">
+                        <input type="text" class="form-input" id="attack-target" placeholder="Target URL or IP" style="font-size: 15px; padding: 16px 20px; border-radius: 10px;">
+                    </div>
+
+                    <div class="tabs" style="margin-bottom: 40px;">
+                        <div class="tab active" onclick="switchLayer('layer7')" id="tab-layer7">Layer 7</div>
+                        <div class="tab" onclick="switchLayer('layer4')" id="tab-layer4">Layer 4</div>
+                    </div>
+
+                    <div id="layer7-panel">
+                        <div class="form-group" style="margin-bottom: 32px;">
+                            <div class="method-grid" style="grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                                <button class="method-btn active" onclick="selectMethod(this, 'HTTP-FLOOD')">HTTP FLOOD</button>
+                                <button class="method-btn" onclick="selectMethod(this, 'HTTP-GET')">HTTP GET</button>
+                                <button class="method-btn" onclick="selectMethod(this, 'HTTP-POST')">HTTP POST</button>
+                                <button class="method-btn" onclick="selectMethod(this, 'CF-UAM')">CF UAM</button>
+                                <button class="method-btn" onclick="selectMethod(this, 'CF-CAPTCHA')">CF Captcha</button>
+                                <button class="method-btn" onclick="selectMethod(this, 'SLOWLORIS')">Slowloris</button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-2" style="margin-bottom: 32px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <select class="form-select" id="http-method" style="padding: 14px 18px; border-radius: 8px;">
+                                    <option value="GET">GET</option>
+                                    <option value="POST">POST</option>
+                                    <option value="HEAD">HEAD</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="number" class="form-input" id="l7-threads" value="50" min="1" max="1000" placeholder="Threads" style="padding: 14px 18px; border-radius: 8px;">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-2" style="margin-bottom: 40px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="number" class="form-input" id="l7-rps" value="500" min="1" max="10000" placeholder="Requests/sec" style="padding: 14px 18px; border-radius: 8px;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="number" class="form-input" id="l7-duration" value="60" min="1" max="3600" placeholder="Duration (s)" style="padding: 14px 18px; border-radius: 8px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="layer4-panel" style="display: none;">
+                        <div class="form-group" style="margin-bottom: 32px;">
+                            <div class="method-grid" style="grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                                <button class="method-btn active" onclick="selectMethod(this, 'TCP-FLOOD')">TCP FLOOD</button>
+                                <button class="method-btn" onclick="selectMethod(this, 'UDP-FLOOD')">UDP FLOOD</button>
+                                <button class="method-btn" onclick="selectMethod(this, 'SYN-FLOOD')">SYN FLOOD</button>
+                                <button class="method-btn" onclick="selectMethod(this, 'ACK-FLOOD')">ACK FLOOD</button>
+                                <button class="method-btn" onclick="selectMethod(this, 'ICMP-FLOOD')">ICMP FLOOD</button>
+                                <button class="method-btn" onclick="selectMethod(this, 'VSE-FLOOD')">VSE FLOOD</button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-2" style="margin-bottom: 32px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="number" class="form-input" id="l4-port" value="80" min="1" max="65535" placeholder="Port" style="padding: 14px 18px; border-radius: 8px;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="number" class="form-input" id="l4-threads" value="100" min="1" max="1000" placeholder="Threads" style="padding: 14px 18px; border-radius: 8px;">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-2" style="margin-bottom: 40px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="number" class="form-input" id="l4-pps" value="1000" min="1" max="100000" placeholder="Packets/sec" style="padding: 14px 18px; border-radius: 8px;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="number" class="form-input" id="l4-duration" value="60" min="1" max="3600" placeholder="Duration (s)" style="padding: 14px 18px; border-radius: 8px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-bottom: 48px;">
+                        <button class="btn btn-primary" id="btn-launch" style="flex: 1; padding: 16px; font-size: 14px; border-radius: 10px;" onclick="startAttack()">Launch Attack</button>
+                        <button class="btn" id="btn-stop" style="flex: 1; padding: 16px; font-size: 14px; border-radius: 10px; display: none;" onclick="stopAttack()">Stop Attack</button>
+                    </div>
+
+                    <div class="card" style="border: none; background: var(--bg-elevated);">
+                        <div class="card-body" style="padding: 32px;">
+                            <div class="grid grid-4">
+                                <div class="stat">
+                                    <div class="stat-value" id="attack-requests" style="font-size: 32px;">0</div>
+                                    <div class="stat-label">Requests</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="attack-success" style="font-size: 32px;">0</div>
+                                    <div class="stat-label">Successful</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="attack-failed" style="font-size: 32px;">0</div>
+                                    <div class="stat-label">Failed</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="attack-elapsed" style="font-size: 32px;">0s</div>
+                                    <div class="stat-label">Elapsed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targets -->
+            <div class="page" id="page-targets">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Target List</div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>URL / IP</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Production Server</td>
+                                    <td>192.168.1.100</td>
+                                    <td>Internal</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Web Server Test</td>
+                                    <td>https://test.example.com</td>
+                                    <td>External</td>
+                                    <td><span class="badge badge-inactive">Maintenance</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Methods -->
+            <div class="page" id="page-methods">
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Layer 7 Methods</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="settings-item">
+                                <div class="settings-info">
+                                    <h4>HTTP FLOOD</h4>
+                                    <p>High-volume HTTP request flooding</p>
+                                </div>
+                                <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-info">
+                                    <h4>HTTP GET</h4>
+                                    <p>GET request based attack</p>
+                                </div>
+                                <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-info">
+                                    <h4>HTTP POST</h4>
+                                    <p>POST request based attack</p>
+                                </div>
+                                <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-info">
+                                    <h4>Slowloris</h4>
+                                    <p>Slow HTTP connection attack</p>
+                                </div>
+                                <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Layer 4 Methods</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="settings-item">
+                                <div class="settings-info">
+                                    <h4>TCP FLOOD</h4>
+                                    <p>TCP packet flooding</p>
+                                </div>
+                                <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-info">
+                                    <h4>UDP FLOOD</h4>
+                                    <p>UDP packet flooding</p>
+                                </div>
+                                <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-info">
+                                    <h4>SYN FLOOD</h4>
+                                    <p>TCP SYN packet flooding</p>
+                                </div>
+                                <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-info">
+                                    <h4>ICMP FLOOD</h4>
+                                    <p>ICMP packet flooding</p>
+                                </div>
+                                <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proxies -->
+            <div class="page" id="page-proxies">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="empty">
+                            <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="28" cy="28" r="20"/>
+                                <path d="M28 14V28L35 35" stroke-linecap="round"/>
+                            </svg>
+                            <p>No proxies configured</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Keys -->
+            <div class="page" id="page-api">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">API Keys</div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Key</th>
+                                    <th>Created</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Production</td>
+                                    <td>sk-xxxxxxxxxxxx</td>
+                                    <td>2024-01-15</td>
+                                    <td><span class="badge badge-active">Active</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Files -->
+            <div class="page" id="page-files">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">File Manager</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="folder-item">
+                            <svg class="folder-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 4C4 2.9 4.9 2 6 2H9L11 4H14C15.1 4 16 4.9 16 6V14C16 15.1 15.1 16 14 16H6C4.9 16 4 15.1 4 14V4Z"/>
+                            </svg>
+                            <span class="folder-name">config</span>
+                            <span class="folder-size">4 items</span>
+                        </div>
+                        <div class="folder-item">
+                            <svg class="folder-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 4C4 2.9 4.9 2 6 2H9L11 4H14C15.1 4 16 4.9 16 6V14C16 15.1 15.1 16 14 16H6C4.9 16 4 15.1 4 14V4Z"/>
+                            </svg>
+                            <span class="folder-name">logs</span>
+                            <span class="folder-size">128 items</span>
+                        </div>
+                        <div class="folder-item">
+                            <svg class="folder-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 4C4 2.9 4.9 2 6 2H9L11 4H14C15.1 4 16 4.9 16 6V14C16 15.1 15.1 16 14 16H6C4.9 16 4 15.1 4 14V4Z"/>
+                            </svg>
+                            <span class="folder-name">proxies</span>
+                            <span class="folder-size">2 items</span>
+                        </div>
+                        <div class="folder-item">
+                            <svg class="folder-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 4C4 2.9 4.9 2 6 2H12C13.1 2 14 2.9 14 4V14C14 15.1 13.1 16 12 16H6C4.9 16 4 15.1 4 14V4Z"/>
+                                <path d="M6 6H12" stroke-linecap="round"/>
+                                <path d="M6 9H10" stroke-linecap="round"/>
+                            </svg>
+                            <span class="folder-name">server.conf</span>
+                            <span class="folder-size">2.4 KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="page" id="page-settings">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>Server Name</h4>
+                                <p>Display name for this server</p>
+                            </div>
+                            <input type="text" class="form-input" value="BLACK-SPIDER-01" style="width: 200px;">
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>Max Threads</h4>
+                                <p>Maximum concurrent threads</p>
+                            </div>
+                            <input type="number" class="form-input" value="1000" style="width: 100px;">
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>Authentication</h4>
+                                <p>Require API key authentication</p>
+                            </div>
+                            <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-info">
+                                <h4>Rate Limiting</h4>
+                                <p>Enable request rate limiting</p>
+                            </div>
+                            <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logs -->
+            <div class="page" id="page-logs">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">System Logs</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="terminal" id="terminal">
+                            <div class="terminal-line">
+                                <span class="terminal-time">[00:00:00]</span>
+                                System initialized
+                            </div>
+                            <div class="terminal-line">
+                                <span class="terminal-time">[00:00:01]</span>
+                                Server status: ONLINE
+                            </div>
+                            <div class="terminal-line">
+                                <span class="terminal-time">[00:00:02]</span>
+                                Waiting for commands...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication
+        let isAuthenticated = false;
+        let currentUser = null;
+        
+        function checkAuth() {
+            if (!isAuthenticated) {
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('main-app').style.display = 'none';
+            } else {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'flex';
+            }
+        }
+        
+        // Fix display for main-app
+        if (document.getElementById('main-app')) {
+            document.getElementById('main-app').style.display = 'none';
+        }
+        
+        // Initialize auth check when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
+        
+        function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (username === 'root' && password === 'root') {
+                isAuthenticated = true;
+                currentUser = { username: 'root', role: 'owner', access: 'full' };
+                checkAuth();
+                document.getElementById('user-display').style.display = 'inline';
+                addLog('User root authenticated successfully');
+                addLog('Access level: FULL OWNER');
+            } else {
+                alert('Invalid credentials!');
+                document.getElementById('login-password').value = '';
+            }
+        }
+        
+        function logout() {
+            isAuthenticated = false;
+            currentUser = null;
+            document.getElementById('user-display').style.display = 'none';
+            checkAuth();
+        }
+        
+        // Initialize auth check
+        checkAuth();
+        
+        let currentPage = 'dashboard';
+        let currentLayer = 'layer7';
+        let selectedMethod = 'HTTP-FLOOD';
+        let isRunning = false;
+        let stats = { requests: 0, success: 0, failed: 0, elapsed: 0 };
+        let interval = null;
+
+        const pageTitles = {
+            dashboard: { title: 'Dashboard', subtitle: 'Overview of your operations' },
+            attack: { title: 'Attack Panel', subtitle: '' },
+            targets: { title: 'Targets', subtitle: 'Manage your test targets' },
+            methods: { title: 'Methods', subtitle: 'Configure attack vectors' },
+            proxies: { title: 'Proxies', subtitle: 'Manage proxy configurations' },
+            api: { title: 'API Keys', subtitle: 'Manage API access' },
+            files: { title: 'Files', subtitle: 'Server file management' },
+            settings: { title: 'Settings', subtitle: 'System configuration' },
+            logs: { title: 'Logs', subtitle: 'System and attack logs' }
+        };
+
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById(`page-${page}`).classList.add('active');
+            event.currentTarget.classList.add('active');
+            
+            document.getElementById('page-title').textContent = pageTitles[page].title;
+            document.getElementById('page-subtitle').textContent = pageTitles[page].subtitle;
+            
+            currentPage = page;
+        }
+
+        function switchLayer(layer) {
+            currentLayer = layer;
+            document.getElementById('tab-layer7').classList.remove('active');
+            document.getElementById('tab-layer4').classList.remove('active');
+            document.getElementById(`tab-${layer}`).classList.add('active');
+
+            if (layer === 'layer7') {
+                document.getElementById('layer7-panel').style.display = 'block';
+                document.getElementById('layer4-panel').style.display = 'none';
+            } else {
+                document.getElementById('layer7-panel').style.display = 'none';
+                document.getElementById('layer4-panel').style.display = 'block';
+            }
+        }
+
+        function selectMethod(btn, method) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedMethod = method;
+        }
+
+        function startAttack() {
+            const target = document.getElementById('attack-target').value;
+            if (!target) {
+                alert('Please enter a target');
+                return;
+            }
+
+            if (isRunning) {
+                alert('Attack already running');
+                return;
+            }
+
+            isRunning = true;
+            stats = { requests: 0, success: 0, failed: 0, elapsed: 0 };
+            
+            // Show stop button, hide launch button
+            document.getElementById('btn-launch').style.display = 'none';
+            document.getElementById('btn-stop').style.display = 'block';
+            
+            const threads = currentLayer === 'layer7' ? 
+                parseInt(document.getElementById('l7-threads').value) : 
+                parseInt(document.getElementById('l4-threads').value);
+            const rps = currentLayer === 'layer7' ? 
+                parseInt(document.getElementById('l7-rps').value) : 
+                parseInt(document.getElementById('l4-pps').value);
+            const duration = currentLayer === 'layer7' ? 
+                parseInt(document.getElementById('l7-duration').value) : 
+                parseInt(document.getElementById('l4-duration').value);
+            
+            addLog(`Starting ${currentLayer.toUpperCase()} attack on: ${target}`);
+            addLog(`Attack Method: ${selectedMethod}`);
+            addLog(`Configuration: ${threads} threads, ${rps} req/s, ${duration}s duration`);
+            addLog(`HTTP Method: ${currentLayer === 'layer7' ? document.getElementById('http-method').value : 'N/A'}`);
+            addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            
+            // Start simulation
+            interval = setInterval(simulateAttack, 1000);
+            
+            // Auto-stop after duration
+            setTimeout(() => {
+                if (isRunning) stopAttack();
+            }, duration * 1000);
+        }
+
+        function simulateAttack() {
+            stats.elapsed++;
+            
+            // Simulate different attack patterns based on method
+            let baseRequests = Math.floor(Math.random() * 500) + 100;
+            let successRate = 0.9;
+            
+            // Adjust based on attack method
+            switch(selectedMethod) {
+                case 'HTTP-FLOOD':
+                    baseRequests = Math.floor(Math.random() * 600) + 200;
+                    successRate = 0.92;
+                    break;
+                case 'HTTP-GET':
+                    baseRequests = Math.floor(Math.random() * 400) + 150;
+                    successRate = 0.95;
+                    break;
+                case 'HTTP-POST':
+                    baseRequests = Math.floor(Math.random() * 350) + 120;
+                    successRate = 0.88;
+                    break;
+                case 'CF-UAM':
+                case 'CF-CAPTCHA':
+                    baseRequests = Math.floor(Math.random() * 200) + 80;
+                    successRate = 0.75;
+                    break;
+                case 'SLOWLORIS':
+                    baseRequests = Math.floor(Math.random() * 100) + 50;
+                    successRate = 0.85;
+                    break;
+                case 'TCP-FLOOD':
+                    baseRequests = Math.floor(Math.random() * 800) + 300;
+                    successRate = 0.90;
+                    break;
+                case 'UDP-FLOOD':
+                    baseRequests = Math.floor(Math.random() * 1000) + 400;
+                    successRate = 0.95;
+                    break;
+                case 'SYN-FLOOD':
+                    baseRequests = Math.floor(Math.random() * 700) + 250;
+                    successRate = 0.87;
+                    break;
+                case 'ACK-FLOOD':
+                    baseRequests = Math.floor(Math.random() * 600) + 200;
+                    successRate = 0.89;
+                    break;
+                case 'ICMP-FLOOD':
+                    baseRequests = Math.floor(Math.random() * 500) + 180;
+                    successRate = 0.93;
+                    break;
+                case 'VSE-FLOOD':
+                    baseRequests = Math.floor(Math.random() * 900) + 350;
+                    successRate = 0.91;
+                    break;
+                default:
+                    baseRequests = Math.floor(Math.random() * 500) + 100;
+                    successRate = 0.90;
+            }
+            
+            const successful = Math.floor(baseRequests * successRate);
+            const failed = baseRequests - successful;
+            
+            stats.requests += baseRequests;
+            stats.success += successful;
+            stats.failed += failed;
+            
+            // Update UI
+            document.getElementById('attack-requests').textContent = stats.requests.toLocaleString();
+            document.getElementById('attack-success').textContent = stats.success.toLocaleString();
+            document.getElementById('attack-failed').textContent = stats.failed.toLocaleString();
+            document.getElementById('attack-elapsed').textContent = stats.elapsed + 's';
+
+            document.getElementById('stat-attacks').textContent = '1';
+            document.getElementById('stat-requests').textContent = stats.requests.toLocaleString();
+            document.getElementById('stat-threads').textContent = currentLayer === 'layer7' ? 
+                document.getElementById('l7-threads').value : 
+                document.getElementById('l4-threads').value;
+            
+            // Log progress every 5 seconds
+            if (stats.elapsed % 5 === 0) {
+                addLog(`Progress: ${stats.requests.toLocaleString()} requests sent (${stats.success.toLocaleString()} successful)`);
+            }
+        }
+
+        function stopAttack() {
+            if (!isRunning) return;
+            
+            isRunning = false;
+            if (interval) {
+                clearInterval(interval);
+                interval = null;
+            }
+            
+            // Show launch button, hide stop button
+            document.getElementById('btn-launch').style.display = 'block';
+            document.getElementById('btn-stop').style.display = 'none';
+            
+            addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            addLog('Attack stopped');
+            addLog(`Final Statistics:`);
+            addLog(`  Total Requests: ${stats.requests.toLocaleString()}`);
+            addLog(`  Successful: ${stats.success.toLocaleString()}`);
+            addLog(`  Failed: ${stats.failed.toLocaleString()}`);
+            addLog(`  Success Rate: ${((stats.success / stats.requests) * 100).toFixed(2)}%`);
+            addLog(`  Duration: ${stats.elapsed}s`);
+            addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            
+            // Reset dashboard stats
+            document.getElementById('stat-attacks').textContent = '0';
+            document.getElementById('stat-threads').textContent = '0';
+        }
+
+        function addLog(message) {
+            const terminal = document.getElementById('terminal');
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = `<span class="terminal-time">[${time}]</span> ${message}`;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+    </script>
+</body>
+</html>

@@ -1416,34 +1416,59 @@
 
             isRunning = true;
             stats = { requests: 0, success: 0, failed: 0, elapsed: 0 };
-            
+
             // Show stop button, hide launch button
             document.getElementById('btn-launch').style.display = 'none';
             document.getElementById('btn-stop').style.display = 'block';
-            
-            const threads = currentLayer === 'layer7' ? 
-                parseInt(document.getElementById('l7-threads').value) : 
+
+            const threads = currentLayer === 'layer7' ?
+                parseInt(document.getElementById('l7-threads').value) :
                 parseInt(document.getElementById('l4-threads').value);
-            const rps = currentLayer === 'layer7' ? 
-                parseInt(document.getElementById('l7-rps').value) : 
+            const rps = currentLayer === 'layer7' ?
+                parseInt(document.getElementById('l7-rps').value) :
                 parseInt(document.getElementById('l4-pps').value);
-            const duration = currentLayer === 'layer7' ? 
-                parseInt(document.getElementById('l7-duration').value) : 
+            const duration = currentLayer === 'layer7' ?
+                parseInt(document.getElementById('l7-duration').value) :
                 parseInt(document.getElementById('l4-duration').value);
-            
+
             addLog(`Starting ${currentLayer.toUpperCase()} attack on: ${target}`);
             addLog(`Attack Method: ${selectedMethod}`);
             addLog(`Configuration: ${threads} threads, ${rps} req/s, ${duration}s duration`);
             addLog(`HTTP Method: ${currentLayer === 'layer7' ? document.getElementById('http-method').value : 'N/A'}`);
             addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            
-            // Start simulation
+
+            // Send real request to server
+            const attackData = {
+                target: target,
+                method: selectedMethod,
+                layer: currentLayer,
+                threads: threads,
+                rps: rps,
+                duration: duration,
+                httpMethod: currentLayer === 'layer7' ? document.getElementById('http-method').value : null,
+                port: currentLayer === 'layer4' ? document.getElementById('l4-port').value : null
+            };
+
+            fetch('/api/attacks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(attackData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                addLog(`Attack sent to server: ${JSON.stringify(data)}`);
+                addLog('Attack initiated successfully');
+                addLog('Requests will continue until you stop manually');
+            })
+            .catch(error => {
+                addLog(`Error: ${error.message}`);
+                stopAttack();
+            });
+
+            // Start simulation for UI updates
             interval = setInterval(simulateAttack, 1000);
-            
-            // Auto-stop after duration
-            setTimeout(() => {
-                if (isRunning) stopAttack();
-            }, duration * 1000);
         }
 
         function simulateAttack() {

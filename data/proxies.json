@@ -1,0 +1,67 @@
+[
+  {
+    "id": "prx-001",
+    "host": "103.152.112.145",
+    "port": 8080,
+    "type": "http",
+    "country": "US",
+    "anonymity": "elite",
+    "latencyMs": 142,
+    "uptime": 99.2,
+    "lastChecked": "2024-12-20T06:00:00.000Z",
+    "status": "active",
+    "source": "manual"
+  },
+  {
+    "id": "prx-002",
+    "host": "45.77.56.212",
+    "port": 3128,
+    "type": "socks5",
+    "country": "NL",
+    "anonymity": "elite",
+    "latencyMs": 88,
+    "uptime": 98.7,
+    "lastChecked": "2024-12-20T06:00:00.000Z",
+    "status": "active",
+    "source": "manual"
+  },
+  {
+    "id": "prx-003",
+    "host": "138.68.84.217",
+    "port": 1080,
+    "type": "socks5",
+    "country": "DE",
+    "anonymity": "elite",
+    "latencyMs": 211,
+    "uptime": 95.1,
+    "lastChecked": "2024-12-20T06:00:00.000Z",
+    "status": "active",
+    "source": "import"
+  },
+  {
+    "id": "prx-004",
+    "host": "159.65.20.105",
+    "port": 8080,
+    "type": "http",
+    "country": "SG",
+    "anonymity": "anonymous",
+    "latencyMs": 340,
+    "uptime": 81.4,
+    "lastChecked": "2024-12-19T18:00:00.000Z",
+    "status": "degraded",
+    "source": "import"
+  },
+  {
+    "id": "prx-005",
+    "host": "198.199.65.189",
+    "port": 3128,
+    "type": "http",
+    "country": "US",
+    "anonymity": "transparent",
+    "latencyMs": 0,
+    "uptime": 0,
+    "lastChecked": "2024-12-18T12:00:00.000Z",
+    "status": "dead",
+    "source": "import"
+  }
+]

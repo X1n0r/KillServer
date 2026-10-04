@@ -1,0 +1,19 @@
+{
+  "level": "info",
+  "directory": "./logs",
+  "files": {
+    "combined": "combined.log",
+    "error":    "error.log",
+    "attacks":  "attacks.log",
+    "access":   "access.log"
+  },
+  "rotation": {
+    "maxSize":  "20m",
+    "maxFiles": "14d",
+    "compress": true
+  },
+  "console": {
+    "enabled": true,
+    "colorize": true
+  }
+}

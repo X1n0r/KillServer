@@ -1,0 +1,120 @@
+[
+  {
+    "id": "atk-20241220-001",
+    "target": "192.168.1.100",
+    "port": 80,
+    "layer": "layer7",
+    "method": "HTTP-FLOOD",
+    "threads": 200,
+    "rps": 5000,
+    "duration": 60,
+    "startedAt": "2024-12-20T14:30:00.000Z",
+    "endedAt": "2024-12-20T14:31:00.000Z",
+    "status": "completed",
+    "stats": {
+      "totalRequests": 298432,
+      "successRequests": 295910,
+      "failedRequests": 2522,
+      "successRate": 99.15,
+      "avgRps": 4973,
+      "peakRps": 5241,
+      "totalDataMB": 182.4,
+      "avgResponseMs": 34
+    },
+    "proxiesUsed": 0,
+    "initiatedBy": "key-001"
+  },
+  {
+    "id": "atk-20241220-002",
+    "target": "https://staging-api.internal.local",
+    "port": 443,
+    "layer": "layer7",
+    "method": "CF-UAM",
+    "threads": 32,
+    "rps": 800,
+    "duration": 120,
+    "startedAt": "2024-12-20T12:15:00.000Z",
+    "endedAt": "2024-12-20T12:17:00.000Z",
+    "status": "completed",
+    "stats": {
+      "totalRequests": 94560,
+      "successRequests": 92100,
+      "failedRequests": 2460,
+      "successRate": 97.40,
+      "avgRps": 787,
+      "peakRps": 844,
+      "totalDataMB": 67.2,
+      "avgResponseMs": 210
+    },
+    "proxiesUsed": 12,
+    "initiatedBy": "key-001"
+  },
+  {
+    "id": "atk-20241219-001",
+    "target": "192.168.1.100",
+    "port": 80,
+    "layer": "layer4",
+    "method": "SYN-FLOOD",
+    "threads": 512,
+    "pps": 500000,
+    "duration": 30,
+    "startedAt": "2024-12-19T21:00:00.000Z",
+    "endedAt": "2024-12-19T21:00:30.000Z",
+    "status": "completed",
+    "stats": {
+      "totalPackets": 14820000,
+      "totalDataMB": 890.5,
+      "avgPps": 494000,
+      "peakPps": 512000
+    },
+    "proxiesUsed": 0,
+    "initiatedBy": "key-001"
+  },
+  {
+    "id": "atk-20241219-002",
+    "target": "10.0.0.5",
+    "port": 443,
+    "layer": "layer7",
+    "method": "SLOWLORIS",
+    "threads": 800,
+    "rps": 0,
+    "duration": 600,
+    "startedAt": "2024-12-19T09:00:00.000Z",
+    "endedAt": null,
+    "status": "failed",
+    "error": "Target unreachable — connection refused on port 443",
+    "stats": {
+      "totalRequests": 0,
+      "successRequests": 0,
+      "failedRequests": 800,
+      "successRate": 0
+    },
+    "proxiesUsed": 0,
+    "initiatedBy": "key-003"
+  },
+  {
+    "id": "atk-20241218-001",
+    "target": "192.168.1.100",
+    "port": 80,
+    "layer": "layer7",
+    "method": "HTTP-GET",
+    "threads": 100,
+    "rps": 2000,
+    "duration": 300,
+    "startedAt": "2024-12-18T14:00:00.000Z",
+    "endedAt": "2024-12-18T14:05:00.000Z",
+    "status": "completed",
+    "stats": {
+      "totalRequests": 598200,
+      "successRequests": 591400,
+      "failedRequests": 6800,
+      "successRate": 98.86,
+      "avgRps": 1994,
+      "peakRps": 2107,
+      "totalDataMB": 410.1,
+      "avgResponseMs": 41
+    },
+    "proxiesUsed": 0,
+    "initiatedBy": "key-001"
+  }
+]

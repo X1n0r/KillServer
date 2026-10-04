@@ -1,0 +1,59 @@
+[
+  {
+    "id": "tgt-001",
+    "name": "Production Web Server",
+    "host": "192.168.1.100",
+    "port": 80,
+    "type": "internal",
+    "protocol": "http",
+    "notes": "Main production server — authorised for load testing",
+    "tags": ["production", "web"],
+    "status": "active",
+    "addedBy": "admin",
+    "addedAt": "2024-09-01T08:00:00.000Z",
+    "lastTestedAt": "2024-12-18T14:30:00.000Z",
+    "stats": {
+      "totalAttacks": 24,
+      "totalRequests": 12483920,
+      "avgResponseMs": 38
+    }
+  },
+  {
+    "id": "tgt-002",
+    "name": "Staging API",
+    "host": "https://staging-api.internal.local",
+    "port": 443,
+    "type": "internal",
+    "protocol": "https",
+    "notes": "Staging environment — safe to stress without approval",
+    "tags": ["staging", "api"],
+    "status": "active",
+    "addedBy": "admin",
+    "addedAt": "2024-10-12T10:00:00.000Z",
+    "lastTestedAt": "2024-12-19T09:15:00.000Z",
+    "stats": {
+      "totalAttacks": 11,
+      "totalRequests": 5820340,
+      "avgResponseMs": 65
+    }
+  },
+  {
+    "id": "tgt-003",
+    "name": "Load Balancer Node 1",
+    "host": "10.0.0.5",
+    "port": 80,
+    "type": "internal",
+    "protocol": "http",
+    "notes": "HAProxy LB — test failover behaviour under load",
+    "tags": ["lb", "infrastructure"],
+    "status": "maintenance",
+    "addedBy": "ops-team",
+    "addedAt": "2024-11-05T07:30:00.000Z",
+    "lastTestedAt": null,
+    "stats": {
+      "totalAttacks": 0,
+      "totalRequests": 0,
+      "avgResponseMs": 0
+    }
+  }
+]

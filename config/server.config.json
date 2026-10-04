@@ -1,0 +1,25 @@
+{
+  "name": "KILLSERVER-01",
+  "version": "2.4.1",
+  "host": "0.0.0.0",
+  "port": 3000,
+  "allowedOrigins": ["*"],
+  "ssl": {
+    "enabled": false,
+    "certPath": "./ssl/cert.pem",
+    "keyPath":  "./ssl/key.pem"
+  },
+  "session": {
+    "secret": "CHANGE_THIS_IN_PRODUCTION",
+    "maxAge": 86400000
+  },
+  "panel": {
+    "title": "KillServer",
+    "subtitle": "Network Stress Testing Platform",
+    "theme": "dark"
+  },
+  "cluster": {
+    "enabled": false,
+    "workers": 4
+  }
+}

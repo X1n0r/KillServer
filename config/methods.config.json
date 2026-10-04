@@ -1,0 +1,156 @@
+{
+  "layer7": [
+    {
+      "id": "HTTP-FLOOD",
+      "name": "HTTP Flood",
+      "description": "High-volume HTTP request flooding with randomised headers and paths",
+      "enabled": true,
+      "maxThreads": 512,
+      "maxRps": 50000,
+      "maxDuration": 3600,
+      "requiresProxy": false,
+      "supportsSSL": true,
+      "tags": ["http", "flood", "layer7"]
+    },
+    {
+      "id": "HTTP-GET",
+      "name": "HTTP GET",
+      "description": "Targeted GET request flooding against specific endpoints",
+      "enabled": true,
+      "maxThreads": 256,
+      "maxRps": 25000,
+      "maxDuration": 3600,
+      "requiresProxy": false,
+      "supportsSSL": true,
+      "tags": ["http", "get", "layer7"]
+    },
+    {
+      "id": "HTTP-POST",
+      "name": "HTTP POST",
+      "description": "POST request flooding with configurable body payloads",
+      "enabled": true,
+      "maxThreads": 256,
+      "maxRps": 20000,
+      "maxDuration": 3600,
+      "requiresProxy": false,
+      "supportsSSL": true,
+      "tags": ["http", "post", "layer7"]
+    },
+    {
+      "id": "CF-UAM",
+      "name": "CF UAM Bypass",
+      "description": "Cloudflare Under Attack Mode bypass using headless browser emulation",
+      "enabled": true,
+      "maxThreads": 64,
+      "maxRps": 5000,
+      "maxDuration": 1800,
+      "requiresProxy": true,
+      "supportsSSL": true,
+      "tags": ["cloudflare", "bypass", "layer7"]
+    },
+    {
+      "id": "CF-CAPTCHA",
+      "name": "CF Captcha Bypass",
+      "description": "Cloudflare CAPTCHA bypass via token recycling and solver integration",
+      "enabled": true,
+      "maxThreads": 32,
+      "maxRps": 2000,
+      "maxDuration": 1800,
+      "requiresProxy": true,
+      "supportsSSL": true,
+      "tags": ["cloudflare", "captcha", "bypass", "layer7"]
+    },
+    {
+      "id": "SLOWLORIS",
+      "name": "Slowloris",
+      "description": "Slow HTTP connection exhaustion — keeps connections open with partial requests",
+      "enabled": true,
+      "maxThreads": 1024,
+      "maxRps": 0,
+      "maxDuration": 7200,
+      "requiresProxy": false,
+      "supportsSSL": false,
+      "tags": ["slow", "connection", "layer7"]
+    },
+    {
+      "id": "RUDY",
+      "name": "R.U.D.Y",
+      "description": "R-U-Dead-Yet: slow POST body injection to exhaust server threads",
+      "enabled": true,
+      "maxThreads": 512,
+      "maxRps": 0,
+      "maxDuration": 7200,
+      "requiresProxy": false,
+      "supportsSSL": true,
+      "tags": ["slow", "post", "layer7"]
+    }
+  ],
+  "layer4": [
+    {
+      "id": "TCP-FLOOD",
+      "name": "TCP Flood",
+      "description": "High-volume raw TCP packet flooding",
+      "enabled": true,
+      "maxThreads": 1024,
+      "maxPps": 10000000,
+      "maxDuration": 3600,
+      "requiresRoot": true,
+      "tags": ["tcp", "flood", "layer4"]
+    },
+    {
+      "id": "UDP-FLOOD",
+      "name": "UDP Flood",
+      "description": "Raw UDP packet flooding with configurable payload size",
+      "enabled": true,
+      "maxThreads": 1024,
+      "maxPps": 20000000,
+      "maxDuration": 3600,
+      "requiresRoot": true,
+      "tags": ["udp", "flood", "layer4"]
+    },
+    {
+      "id": "SYN-FLOOD",
+      "name": "SYN Flood",
+      "description": "TCP SYN packet flood exploiting the 3-way handshake",
+      "enabled": true,
+      "maxThreads": 1024,
+      "maxPps": 15000000,
+      "maxDuration": 3600,
+      "requiresRoot": true,
+      "tags": ["tcp", "syn", "layer4"]
+    },
+    {
+      "id": "ACK-FLOOD",
+      "name": "ACK Flood",
+      "description": "TCP ACK packet flooding to bypass SYN cookie protection",
+      "enabled": true,
+      "maxThreads": 512,
+      "maxPps": 10000000,
+      "maxDuration": 3600,
+      "requiresRoot": true,
+      "tags": ["tcp", "ack", "layer4"]
+    },
+    {
+      "id": "ICMP-FLOOD",
+      "name": "ICMP Flood",
+      "description": "ICMP echo request flood (ping flood)",
+      "enabled": true,
+      "maxThreads": 256,
+      "maxPps": 5000000,
+      "maxDuration": 3600,
+      "requiresRoot": true,
+      "tags": ["icmp", "ping", "layer4"]
+    },
+    {
+      "id": "VSE-FLOOD",
+      "name": "VSE Flood",
+      "description": "Valve Source Engine protocol amplification flood",
+      "enabled": false,
+      "maxThreads": 256,
+      "maxPps": 5000000,
+      "maxDuration": 3600,
+      "requiresRoot": true,
+      "tags": ["udp", "amplification", "layer4"]
+    }
+  ]
+}

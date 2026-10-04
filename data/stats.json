@@ -1,0 +1,40 @@
+{
+  "lifetime": {
+    "totalAttacks": 248,
+    "totalRequests": 1284930210,
+    "totalDataGB": 8420.7,
+    "totalDurationSeconds": 48600,
+    "avgSuccessRate": 97.42,
+    "avgResponseMs": 52
+  },
+  "today": {
+    "attacks": 2,
+    "requests": 393000,
+    "dataGB": 0.25,
+    "avgSuccessRate": 98.3
+  },
+  "thisWeek": {
+    "attacks": 14,
+    "requests": 2840000,
+    "dataGB": 18.4,
+    "avgSuccessRate": 97.9
+  },
+  "topMethods": [
+    { "method": "HTTP-FLOOD", "count": 112, "pct": 45.2 },
+    { "method": "HTTP-GET",   "count": 64,  "pct": 25.8 },
+    { "method": "SYN-FLOOD",  "count": 38,  "pct": 15.3 },
+    { "method": "UDP-FLOOD",  "count": 20,  "pct": 8.1  },
+    { "method": "SLOWLORIS",  "count": 14,  "pct": 5.6  }
+  ],
+  "system": {
+    "cpu": 12,
+    "memoryUsedMB": 256,
+    "memoryTotalMB": 8192,
+    "diskUsedPct": 45,
+    "networkGbps": 1.2,
+    "networkMaxGbps": 10,
+    "activeThreads": 0,
+    "activeAttacks": 0
+  },
+  "updatedAt": "2024-12-20T14:31:00.000Z"
+}

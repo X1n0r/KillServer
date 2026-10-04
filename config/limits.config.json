@@ -1,0 +1,48 @@
+{
+  "global": {
+    "maxConcurrentAttacks": 10,
+    "maxThreadsTotal": 4096,
+    "maxDurationSeconds": 7200,
+    "maxTargetsPerKey": 50,
+    "maxProxies": 5000
+  },
+  "rateLimit": {
+    "windowMs": 60000,
+    "maxRequests": 120,
+    "skipPaths": ["/api/health", "/"]
+  },
+  "plans": {
+    "free": {
+      "maxConcurrentAttacks": 1,
+      "maxThreads": 50,
+      "maxDuration": 60,
+      "maxRps": 1000,
+      "layer4Access": false,
+      "bypassMethods": false
+    },
+    "basic": {
+      "maxConcurrentAttacks": 3,
+      "maxThreads": 200,
+      "maxDuration": 300,
+      "maxRps": 10000,
+      "layer4Access": true,
+      "bypassMethods": false
+    },
+    "pro": {
+      "maxConcurrentAttacks": 10,
+      "maxThreads": 1024,
+      "maxDuration": 3600,
+      "maxRps": 50000,
+      "layer4Access": true,
+      "bypassMethods": true
+    },
+    "enterprise": {
+      "maxConcurrentAttacks": 50,
+      "maxThreads": 4096,
+      "maxDuration": 7200,
+      "maxRps": 0,
+      "layer4Access": true,
+      "bypassMethods": true
+    }
+  }
+}

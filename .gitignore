@@ -1,0 +1,7 @@
+node_modules/
+.env
+logs/*.log
+logs/*.gz
+data/attack-history.json
+*.key
+*.pem
